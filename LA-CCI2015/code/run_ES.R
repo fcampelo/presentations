@@ -43,14 +43,14 @@ run_ES <- function(lambda, sigma, probpars, stopcrit, seed = NULL){
 	while(keep.running){
 		# Generate trial vectors
 		Xc <- matrix(x,
-				 nrow = lambda,
-				 ncol = n,
+				 nrow  = lambda,
+				 ncol  = n,
 				 byrow = TRUE) + 
 			matrix(rnorm(n * lambda, 
 					 mean = 0, 
-					 sd = sigma),
-				 ncol = n,
-				 nrow = lambda)
+					 sd   = sigma),
+				 ncol   = n,
+				 nrow   = lambda)
 		
 		# Truncate to limits
 		Xc <- pmax(0*Xc, pmin(0*Xc + 1, Xc))
