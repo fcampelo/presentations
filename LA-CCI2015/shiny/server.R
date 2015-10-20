@@ -49,6 +49,16 @@ shinyServer(function(input, output) {
 				scale_x_log10()
 		})
 	})
+	
+	output$counter <- 
+	  renderText({
+	    if (!file.exists("counter.Rdata")) counter <- 0
+	    else load("counter.Rdata")
+	    counter  <- counter + 1
+	    save(counter, 
+	         file = "counter.Rdata")     
+	    paste("Hits: ", counter)
+	  })
 })
 
 
