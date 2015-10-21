@@ -96,10 +96,10 @@ shinyUI(fluidPage(
            plotOutput("viewplot",
                       width  = "100%",
                       height = "600px")
-    ),
+    )
     #
-    column(12,
-           tags$hr(),
-           tags$h3(textOutput("counter")))
+#     column(12,
+#            tags$hr(),
+#            tags$h3(textOutput("counter")))
   )
 ))
