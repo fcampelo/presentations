@@ -1,8 +1,8 @@
 ## Tutorial: _Design of Experiments and Statistical Comparison of Evolutionary Agorithms_  
-**Place:** CEFET-MG, Belo Horizonte, Brazil
+**Place:** CEFET-MG, Belo Horizonte, Brazil  
 **Date:** October 22, 2015
 
-This tutorial is essentially the same one (with minor modifications) presented at the _2nd Latin American Congress on Computational Intelligence_ (October 13, 2015), available [here](https://github.com/fcampelo/presentations/tree/master/LASCI2015):
+This tutorial is essentially the same one (with minor modifications) presented at the _2nd Latin American Congress on Computational Intelligence_ (October 13, 2015), available [here](https://github.com/fcampelo/presentations/tree/master/LASCI2015).
 
 Please cite this presentation as:
 
