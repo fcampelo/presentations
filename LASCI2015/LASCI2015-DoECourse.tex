@@ -1,0 +1,772 @@
+\documentclass[t]{beamer}
+
+% Load general definitions
+\input{preamble.tex}
+
+% Specific definitions
+\title[]{Design of Experiments}
+\subtitle[]{and Experimental Comparison of Evolutionary Algorithms}
+\author[]{Prof. Felipe Campelo, Ph.D.}
+\institute{Dept. Electrical Engineering, Universidade Federal de Minas Gerais}
+\date{Curitiba, Brazil - October 2015}
+
+\begin{document}
+
+% cover page
+\setbeamertemplate{footline}{}
+\begin{frame}
+\vskip 5em
+  \titlepage
+  \begin{tikzpicture}[remember picture,overlay]
+  \node[anchor=south west,yshift=5pt] at (current page.south west) {\includegraphics[width=.15\textwidth]{../figures/by-nc-sa.png}};
+  \node[anchor=north east,yshift=-10pt,xshift=-10pt] at (current page.north east) {\includegraphics[width=.25\textwidth]{../figures/principal_completa3_ufmg.jpg}};
+  \node[anchor=north west,yshift=-15pt,xshift=10pt] at (current page.north west) {\includegraphics[width=.3\textwidth]{../figures/ORCSBanner.png}};
+  \end{tikzpicture}%  
+\end{frame}
+
+%=====
+
+% Opening page
+\begin{frame}
+\frametitle{Main Concepts}
+\begin{tikzpicture}[remember picture,overlay]
+    \node[anchor=east,yshift=-15pt,xshift=0pt] at (current page.east)
+    {\includegraphics[width=.8\textwidth]{../figures/mindmap.png}};
+\end{tikzpicture}%
+\end{frame}
+
+%=====
+% Main slides
+\begin{ftst}
+{Motivation}
+{Experimental analysis of algorithms}
+J.N. Hooker (1994): ``\textit{In other words, we should try to build an empirical science of algorithms}'';
+\vone
+Theoretical analyses are elegant, but sometimes inadequate, impractical, or unrepresentative;
+\vone
+Experimental investigation can provide valuable information - \textbf{as long as it is done properly!}
+\vone
+\begin{block}{}
+\centering\textbf{Ideal situation: theory + experimentation}
+\end{block}
+\begin{tikzpicture}[remember picture,overlay]
+\node[anchor=north east,yshift=-8pt,xshift=0pt] at (current page.north east) {\includegraphics[width=0.12\textwidth]{../figures/mindmap-small.png}};
+\end{tikzpicture}%
+\end{ftst}
+
+%=====
+
+\begin{ftst}
+{Motivation}
+{Main question}
+\vskip 3em
+\begin{block}{}
+\Large\centering\textit{How much of the observed difference in performance between algorithms is due to actual differences in behavior, and how much is random noise?}
+\end{block}
+\begin{tikzpicture}[remember picture,overlay]
+\node[anchor=north east,yshift=-8pt,xshift=0pt] at (current page.north east) {\includegraphics[width=0.12\textwidth]{../figures/mindmap-small.png}};
+\end{tikzpicture}%
+\end{ftst}
+
+%=====
+
+\begin{ftst}
+{Motivation}
+{Careless experimentation}
+\begin{columns}[c]
+\column[T]{0.75\textwidth}
+\begin{block}{}
+\begin{flushright}
+``\textit{To consult the statistician after an experiment is\\
+finished is often merely to ask him to conduct a post\\
+mortem examination. He can perhaps say what\\
+the experiment died of.}''\\
+{\scriptsize -- Sir Ronald Fisher}
+\end{flushright}
+\end{block}
+\column[T]{0.45\textwidth}\begin{center}
+\end{center}
+\end{columns}
+\vone\vone
+Unfortunately still common in the EA literature, but top journals are increasingly requiring higher methodological standards.
+\vone
+Tends to generate strongly biased results in favor of the ``proposed method'' (unsurprisingly).
+\begin{tikzpicture}[remember picture,overlay]
+\node[anchor=north east,yshift=-8pt,xshift=0pt] at (current page.north east) {\includegraphics[width=0.12\textwidth]{../figures/mindmap-small.png}};
+\node[anchor=north east,yshift=-69pt,xshift=-30pt] at (current page.north east) 
+{\includegraphics[height=2.4cm]{../figures/fisher.png}};
+\end{tikzpicture}%
+\lfr{Image: \url{http://www.nndb.com/people/763/000196175/}}
+\end{ftst}
+
+%=====
+
+\begin{ftst}
+{Motivation}
+{Careless experimentation}
+\begin{tikzpicture}[remember picture,overlay]
+\node[anchor=north east,yshift=-8pt,xshift=0pt] at (current page.north east) {\includegraphics[width=0.12\textwidth]{../figures/mindmap-small.png}};
+\end{tikzpicture}%
+\begin{columns}
+\column[t]{0.5\textwidth}
+\textbf{Proposed method}
+\vhalf
+\bitems Careful implementation and debugging;
+\spitem Exhaustive tuning;
+\spitem Many experimental runs;
+\eitem
+
+\column[t]{0.5\textwidth}
+\textbf{Competing algorithm}
+\vhalf
+\bitems Careless implementation;
+\spitem Use of ``literature values'' for parameters;
+\spitem Single experimental run;
+\eitem
+\end{columns}
+\vone\vone\pause
+\begin{block}{}
+\centering\textbf{Description in the manuscript}\\
+\centering``\textit{The values presented here are the result of 30 independent runs of the algorithms}''.
+\end{block}
+\end{ftst}
+
+%=====
+
+\begin{ftst}
+{Motivation}
+{Some other common issues}
+Lack of a clear definition of the question one is trying to answer and of the hypotheses one is trying to test;
+\vone
+Inversion of the experimental rationale: desperate search to \textbf{demonstrate that my algorithm is the best}, instead of \textbf{investigating whether} it really is;
+\vone
+Lack of reproducibility.
+\begin{tikzpicture}[remember picture,overlay]
+\node[anchor=north east,yshift=-8pt,xshift=0pt] at (current page.north east) {\includegraphics[width=0.12\textwidth]{../figures/mindmap-small.png}};
+\end{tikzpicture}%
+\end{ftst}
+
+%=====
+
+\begin{ftst}
+{Motivation}
+{Other common issues}
+Lack of a clear definition of the question one is trying to answer and of the hypotheses one is trying to test;
+\vone
+Inversion of the experimental rationale: desperate search to \textbf{demonstrate that my algorithm is the best}, instead of \textbf{investigating whether} it really is;
+\vone
+Lack of reproducibility.
+\begin{tikzpicture}[remember picture,overlay]
+\node[anchor=north east,yshift=-8pt,xshift=0pt] at (current page.north east) {\includegraphics[width=0.12\textwidth]{../figures/mindmap-small.png}};
+\node[anchor=south,yshift=40pt,xshift=0pt] at (current page.south) 
+{\includegraphics[width=.15\textwidth]{../figures/dontpanic.png}};
+\end{tikzpicture}%
+\lfr{Image: http://vigilantmeadow.deviantart.com/art/DON-T-PANIC-165415311}
+\end{ftst}
+
+%=====
+
+\begin{ftst}
+{Good practices}
+{Important concepts in experimental algorithmics}
+\begin{columns}
+\column[T]{0.48\textwidth}
+\bitems Relevant experiments;
+\spitem Placement within the literature;
+\spitem Adequate test instances;
+\spitem Good experimental desing;
+\spitem Efficient implementations;
+\eitem
+\column[T]{0.48\textwidth}
+\bitems Reproducibility;
+\spitem Comparability;
+\spitem Telling the whole story;
+\spitem Support for the conclusions;
+\spitem Correct presentation of results;
+\eitem
+\end{columns}
+\begin{tikzpicture}[remember picture,overlay]
+\node[anchor=north east,yshift=-8pt,xshift=0pt] at (current page.north east) {\includegraphics[width=0.12\textwidth]{../figures/mindmap-small.png}};
+\end{tikzpicture}%
+\lfr{Based on D.S. Johnson: \textit{A Theoretician's Guide to the Experimental Analysis of Algorithms} - \url{http://plato.asu.edu/ftp/experguide.pdf}}
+\end{ftst}
+
+%=====
+
+\begin{ftst}
+{Pre-experimental checklist}
+{Before you even start...}
+\begin{tikzpicture} [remember picture,overlay]
+\node[anchor=north east,yshift=-8pt,xshift=0pt] at (current page.north east) {\includegraphics[width=0.12\textwidth]{../figures/mindmap-small.png}};
+\end{tikzpicture}%
+Is the comparison relevant?
+\vone
+Will the (possible) results be of interest to anyone?
+\vone 
+Does it have any practical implications?
+\vone 
+How does it fit within the literature?
+\vone\vone\vone
+\end{ftst}
+
+%=====
+
+\begin{ftst}
+{Pre-experimental checklist}
+{Before you even start...}
+\begin{tikzpicture} [remember picture,overlay]
+\node[anchor=north east,yshift=-8pt,xshift=0pt] at (current page.north east) {\includegraphics[width=0.12\textwidth]{../figures/mindmap-small.png}};
+\end{tikzpicture}%
+Is the comparison relevant?
+\vone
+Will the (possible) results be of interest to anyone?
+\vone 
+Does it have any practical implications?
+\vone 
+How does it fit within the literature?
+\vone\vone\vone
+However...
+\vhalf
+{\scriptsize``\textit{Sometimes one should do a completely wild experiment,\\like blowing the trumpet to the tulips every morning\\for a month. Probably nothing would happen, but what if it did?}''\\}
+{\tiny -- Sir George Howard Darwin}
+\begin{tikzpicture} [remember picture,overlay]
+\node[anchor=south east,yshift=-10pt,xshift=13pt] at (current page.south east) {\includegraphics[height=2.5cm]{../figures/ttt.png}};
+\end{tikzpicture}%
+\lfr{Girl playing: \url{http://www.film.queensu.ca/tulips/default.html}}
+\end{ftst}
+
+%=====
+
+\begin{ftst}
+{Pre-experimental design}
+{The quest for \textit{The Question}}
+\begin{columns}
+\column[T]{0.9\textwidth}
+\vskip 1em
+\begin{block}{}
+{\small \flushright``\textit{- Would you tell me, please, which way I ought to go from here?\\
+- That depends a good deal on where you want to get to, said the Cat.\\
+- I don't much care where - said Alice.\\
+- Then it doesn't matter which way you go, the Cat replied}\\
+\vhalf
+Lewis Carroll, \textbf{Alice in Wonderland}\\}
+\end{block}
+\column[T]{0.3\textwidth}
+\end{columns}
+\vone\vone
+The first (and possibly the most important) thing to determine is what exactly your experiment is intended to reveal / discover.
+
+\begin{tikzpicture} [remember picture,overlay]
+\node[anchor=north east,yshift=-8pt,xshift=0pt] at (current page.north east) {\includegraphics[width=0.12\textwidth]{../figures/mindmap-small.png}};
+\node[anchor=north west,yshift=-105pt,xshift=0pt] at (current page.north west) 
+{\includegraphics[width=0.12\textwidth]{../figures/cat.png}};
+\end{tikzpicture}%
+\lfr{Image adapted from \url{https://www.pinterest.com/pin/381609768395834338/}}
+\end{ftst}
+
+%=====
+
+\begin{ftst}
+{Pre-experimental design}
+{The quest for \textit{The Question}}
+\begin{tikzpicture} [remember picture,overlay]
+\node[anchor=north east,yshift=-8pt,xshift=0pt] at (current page.north east) {\includegraphics[width=0.12\textwidth]{../figures/mindmap-small.png}};
+\end{tikzpicture}%
+What is the purpose of your experiment?
+\begin{block}{}
+\centering``\textit{I want to prove that my method is good!}''
+\end{block}
+\vone
+Lets drop the exclamation mark and refine that a little, shall we?
+\pause
+\begin{block}{}
+\centering``\textit{I want to \textbf{discover if} my method is good.}''
+\end{block}
+\vone
+That's much better. \pause Now, ``good'' compared to what?
+\begin{block}{}
+\centering``\textit{I want to discover if my method is \textbf{better than algorithm A}.}''
+\end{block}
+\vone 
+We're making progress...
+\end{ftst}
+
+%=====
+
+\begin{ftst}
+{Pre-experimental design}
+{The quest for \textit{The Question}}
+\begin{tikzpicture} [remember picture,overlay]
+\node[anchor=north east,yshift=-8pt,xshift=0pt] at (current page.north east) {\includegraphics[width=0.12\textwidth]{../figures/mindmap-small.png}};
+\end{tikzpicture}%
+Lets proceed with our quest for \textit{The Question}: you want to compare your method to another, but on what exactly?
+\pause
+\begin{block}{}
+\centering``\textit{I want to discover if my method is better than algorithm A \textbf{in terms of solution quality}}.''
+\end{block}
+\vone\pause
+And how are you going to measure solution quality?
+\pause
+\begin{block}{}
+\centering``\textit{I want to discover if my method is better than algorithm A in terms of solution quality, \textbf{measured using indicator $\mathcal{F}$}}.''
+\end{block}
+\end{ftst}
+
+%=====
+
+\begin{ftst}
+{Pre-experimental design}
+{The quest for \textit{The Question}}
+\begin{tikzpicture} [remember picture,overlay]
+\node[anchor=north east,yshift=-8pt,xshift=0pt] at (current page.north east) {\includegraphics[width=0.12\textwidth]{../figures/mindmap-small.png}};
+\end{tikzpicture}%
+Lets keep it up just a little more, we're almost there. When you say ``better'', what exactly do you mean? Typical, best, worst case?
+\pause
+\begin{block}{}
+\centering``\textit{I want to discover if my method is better than algorithm A in terms of \textbf{average} solution quality, measured using \textbf{the mean of} indicator $\mathcal{F}$}.''
+\end{block}
+\vone
+\pause
+And you want to investigate if your method is good for what?
+\pause
+\begin{block}{}
+\centering``\textit{I want to discover if my method is better than algorithm A, in terms of average solution quality (measured using the mean of indicator $\mathcal{F}$), \textbf{for the solution of a class of problems $\mathcal{Q}$}}.''
+\end{block}
+\end{ftst}
+
+%=====
+
+\begin{ftst}
+{Pre-experimental design}
+{The quest for \textit{The Question}}
+\begin{tikzpicture} [remember picture,overlay]
+\node[anchor=north east,yshift=-8pt,xshift=0pt] at (current page.north east) {\includegraphics[width=0.12\textwidth]{../figures/mindmap-small.png}};
+\end{tikzpicture}%
+The process of determining \textit{The Question} is an important one, which is often overlooked in experimental algorithmics.
+\vone
+Besides escaping the mockery of the Cheshire Cat, there are good reasons not to ignore this step:
+
+\bitems \textit{HARKing} tends to greatly increase the rate of false positives in favor of the ``proposed approach'';
+\spitem Thinking about \textit{The Question} forces the experimenter to consider important aspects of his or her research, such as scope and performance measurement;
+\eitem
+\lfr{Harking = \textit{Hypothesizing After the Results are Known}}
+\end{ftst}
+
+%=====
+
+\begin{ftst}
+{Pre-experimental design}
+{Selection of test instances}
+\begin{tikzpicture} [remember picture,overlay]
+\node[anchor=north east,yshift=-8pt,xshift=0pt] at (current page.north east) {\includegraphics[width=0.12\textwidth]{../figures/mindmap-small.png}};
+\end{tikzpicture}%%
+The name of the game is \textit{Representativeness}!
+\vone
+Benchmark sets can result in \textit{overfitting} of the algorithms to specific instances;
+\vhalf
+Randomly generated instances may not be representative of real problems;
+\vhalf
+Arbitrary problem selection can introduce experimenter biases;
+\vone
+\begin{block}{Some ideas}
+\bitems Random sampling of representative instances (\textit{random factor} approach)
+\spitem Training and validation (\textit{machine learning} approach)\eitem
+\end{block}
+\end{ftst}
+
+%=====
+
+\begin{ftst}
+{Pre-experimental design}
+{Non-experimental parameters}
+\begin{tikzpicture} [remember picture,overlay]
+\node[anchor=north east,yshift=-8pt,xshift=0pt] at (current page.north east) {\includegraphics[width=0.12\textwidth]{../figures/mindmap-small.png}};
+\end{tikzpicture}%%
+How to deal with non-experimental parameters?
+
+\bitems Fixed values? (generalization problem)
+\spitem Randomized values? (representativeness problem) 
+\spitem Literature values? (adequacy problem)
+\eitem
+\vhalf
+\begin{block}{Tuning approach}
+\bitems Use a portion of the computational budget of the experiment to tune these parameters;
+\spitem Balanced effort for \textit{all} algorithms.
+\eitem
+\end{block}
+\end{ftst}
+
+%=====
+
+\begin{ftst}
+{Design of Experiments}
+{What is it?}
+\begin{tikzpicture} [remember picture,overlay]
+\node[anchor=north east,yshift=-8pt,xshift=0pt] at (current page.north east) {\includegraphics[width=0.12\textwidth]{../figures/mindmap-small.png}};
+\end{tikzpicture}%%
+\vone\vone
+\begin{block}{}
+\centering \textit{Definition of data collection protocols that enable a correct analysis by means of statistical tools capable of supporting sound and objective conclusions.}
+\end{block}
+\vone
+Necessary for conclusions to have some quantifiable \textit{meaning};
+\vone
+Useful for preventing mistakes due to personal biases or other experimental artifacts.
+\end{ftst}
+
+%=====
+
+\begin{ftst}
+{Design of Experiments}
+{Sample size, replication and pseudoreplication - a short detour}
+\begin{tikzpicture} [remember picture,overlay]
+\node[anchor=north east,yshift=-8pt,xshift=0pt] at (current page.north east) {\includegraphics[width=0.12\textwidth]{../figures/mindmap-small.png}};
+\node[anchor=south east,yshift=0pt,xshift=0pt] at (current page.south east) {\includegraphics[width=0.15\textwidth]{../figures/itt.png}};
+\end{tikzpicture}%%
+Suppose that we want to investigate the question: ``\textit{Is the average hair length different between students and professors in the Computational Intelligence field?}''
+\vone
+Lets assume that the audience of this tutorial is a representative sample of our population of interest;
+\vone
+If we take 5 professors and 5 students from the audience and measure 1 hair from each head, what is our sample size?
+\vone\pause
+What if we take 30 hairs from each head?
+\lfr{Example adapted from B. Shipley, \textit{Cause and Correlation in Biology}. Cambridge University Press, 2000.}
+\lfr{Cousin Itt: \url{http://kawiku.deviantart.com/art/Cousin-Itt-334962933}}
+\end{ftst}
+
+%=====
+
+\begin{ftst}
+{Design of Experiments}
+{Sample size, replication and pseudoreplication - a short detour}
+\begin{tikzpicture} [remember picture,overlay]
+\node[anchor=north east,yshift=-8pt,xshift=0pt] at (current page.north east) {\includegraphics[width=0.12\textwidth]{../figures/mindmap-small.png}};
+\node[anchor=south east,yshift=0pt,xshift=0pt] at (current page.south east) {\includegraphics[width=0.15\textwidth]{../figures/itt.png}};
+\end{tikzpicture}%%
+Sampling more hairs from a given head improves the precision of our estimate for that particular head, but \textit{\textbf{it does not increase our effective sample size!}}
+\vone
+In this example, performing statistical tests considering the 300 individual measurements (10 heads, 30 hairs per head) as independent values would falsely inflate our degrees of freedom.
+\vone
+This common mistake is called \textit{pseudoreplication}, and results in a much higher rate of false positives in statistical tests.
+\vone
+A simple solution is to use the average hair length per head\\
+as the individual data points.
+\lfr{Cousin Itt: \url{http://kawiku.deviantart.com/art/Cousin-Itt-334962933}}
+\end{ftst}
+
+%=====
+
+\begin{ftst}
+{Design of Experiments}
+{Sample size, replication and pseudoreplication - a short detour}
+\begin{tikzpicture} [remember picture,overlay]
+\node[anchor=north east,yshift=-8pt,xshift=0pt] at (current page.north east) {\includegraphics[width=0.12\textwidth]{../figures/mindmap-small.png}};
+\end{tikzpicture}%%
+The analogy between the hair example and the comparison of EAs is quite straightforward:
+\begin{block}{}
+\begin{center}
+\begin{tabular}{l|c|c}
+\footnotesize
+                                    & \textbf{Hair example}        & \textbf{Algorithm comparisons} \\ 
+\hline
+Population of interest    & People in CI                       & Problem class $\mathcal{Q}$\\
+Comparison                  & Student $\times$ Prof.       & Alg. A $\times$ Alg. B\\ 
+Observation unit           & Head                                & Problem instance\\ 
+Within-unit replicate     & Individual hairs                  & Individual runs\\
+\end{tabular} 
+\end{center}
+\end{block}
+\vhalf
+More runs will buy you \textit{some} power by reducing the uncertainties associated with each instance. 
+\vhalf
+For greater power, \textit{more instances} is the way to go.
+\lfr{Check M. Birattari's \textit{On the estimation of the expected performance of a metaheuristic on a class of instances. How many instances, how many runs?} (\url{http://goo.gl/TVo6YI}) for a deeper discussion.}
+\end{ftst}
+
+%=====
+
+\begin{ftst}
+{Design of Experiments}
+{Minimally relevant difference}
+\begin{tikzpicture} [remember picture,overlay]
+\node[anchor=north east,yshift=-8pt,xshift=0pt] at (current page.north east) {\includegraphics[width=0.12\textwidth]{../figures/mindmap-small.png}};
+\end{tikzpicture}%%
+More instances (and, to a certain extent, more runs per instance) will provide increased power in statistical comparisons. 
+\vone
+\textit{Just don't overdo it!}
+\vone
+To avoid falling victim to \textit{p-hacking}, it is important to define (prior to running the experiment) what is the smallest difference that would have any practical implication.
+\vone
+When analysing and describing the experiment, this practical threshold can provide a much needed reality check for the eager researcher.
+\lfr{\textit{p-hacking}: tweaking your experiment (or torturing your data) until it gives you statistical significance.}
+\end{ftst}
+
+%=====
+
+\begin{ftst}
+{Design of Experiments}
+{Statistical power - a(nother) short detour}
+\begin{tikzpicture} [remember picture,overlay]
+\node[anchor=north east,yshift=-8pt,xshift=0pt] at (current page.north east) {\includegraphics[width=0.12\textwidth]{../figures/mindmap-small.png}};
+\end{tikzpicture}%%
+The earlier discussion gave us some insight on \textit{how to think} about comparative experiments in evolutionary computation;
+\vone
+The power (i.e., sensitivity) of a given experiment to detect a certain difference in performance between two algorithms is a function of some factors:
+
+\bitems \textit{Sample size} $\checkmark$\pause
+\spitem Significance level  $\checkmark$\pause
+\spitem Effect size  $\checkmark$\pause
+\spitem Residual variance (i.e., unnacounted variability)
+\eitem
+
+\end{ftst}
+
+%=====
+
+\begin{ftst}
+{Design of Experiments}
+{Statistical power - a(nother) short detour}
+\begin{tikzpicture} [remember picture,overlay]
+\node[anchor=north east,yshift=-8pt,xshift=0pt] at (current page.north east) {\includegraphics[width=0.12\textwidth]{../figures/mindmap-small.png}};
+\node[anchor=south west,yshift=25pt,xshift=-5pt] at (current page.south west) 
+{\includegraphics[width=0.17\textwidth]{../figures/fuel.png}};
+\end{tikzpicture}%%
+%The larger the amount of variability that is not accounted in our models, the greater the risk that it may mask the effects of interest.
+Suppose that you want to investigate the mean efficiency of different fuel mixtures (in terms of km/\$) for a fleet of vehicles.
+\vone
+Between-vehicle variation is a potentially large source of variability (possibly larger than the differences due to different fuels);
+\vone
+This variability can be modeled by considering each vehicle as an \textit{experimental unit}, and isolating its effects in the statistical model.
+\vone
+\begin{columns}
+\column[T]{0.2\textwidth}
+\column[T]{0.7\textwidth}
+For known and controllable sources of spurious variation (such as the vehicles in this example) the technique used to model this variation out of our inference is called \textit{blocking}.
+\end{columns}
+\lfr{Image: \url{https://financialsensei.wordpress.com/tag/save-money-on-gas/}}
+\end{ftst}
+
+%=====
+
+\begin{ftst}
+{Design of Experiments}
+{Blocking}
+\begin{tikzpicture} [remember picture,overlay]
+\node[anchor=north east,yshift=-8pt,xshift=0pt] at (current page.north east) {\includegraphics[width=0.12\textwidth]{../figures/mindmap-small.png}};
+\end{tikzpicture}%%
+\textit{Blocking} is the principle behind well-known techniques for comparing algorithms on multiple instances, such as \textit{Friedman's test} and \textit{Wilcoxon-Mann-Whitney test};
+\vone
+However, the usually shunned parametric counterparts (\textit{blocked ANOVA} and \textit{paired t-tests}) also deserve some attention;
+\vone
+The assumption of normal \textit{sampling distribution of the means} is generally well covered by the Central Limit Theorem even for modest sample sizes (important exceptions: \textbf{\textit{truncated observations}}, \textbf{\textit{extreme skewness}}, and \textbf{\textit{outliers}}).
+\vone
+Parametric methods usually present larger power (i.e., greater sensitivity) and are simpler to understand.
+\end{ftst}
+
+%=====
+
+\begin{ftst}
+{Design of Experiments}
+{Central Limit Theorem}
+\begin{tikzpicture} [remember picture,overlay]
+\node[anchor=north east,yshift=-8pt,xshift=0pt] at (current page.north east) {\includegraphics[width=0.12\textwidth]{../figures/mindmap-small.png}};
+\node[anchor=south,yshift=40pt,xshift=0pt] at (current page.south) 
+{\includegraphics[width=\textwidth]{../figures/CLTdemo.png}};
+\end{tikzpicture}%%
+\lfr{Interactive demo: \url{http://drwho.cpdee.ufmg.br:3838/CLT/}}
+\lfr{Source code: \url{http://git.io/vnPj8}}
+\end{ftst}
+
+%%===== FOR THE EICEFALA. ALSO INCLUDE DISCUSSION ON RANDOMIZATION.
+%
+%\begin{ftst}
+%{Design of Experiments}
+%{Follow the plan!}
+%\begin{tikzpicture} [remember picture,overlay]
+%\node[anchor=north east,yshift=-8pt,xshift=0pt] at (current page.north east) {\includegraphics[width=0.12\textwidth]{../figures/mindmap-small.png}};
+%\end{tikzpicture}%%
+%
+%\end{ftst}
+
+%=====
+
+\begin{ftst}
+{Statistical modeling and inference}
+{A consequence of design}
+\begin{tikzpicture} [remember picture,overlay]
+\node[anchor=north east,yshift=-8pt,xshift=0pt] at (current page.north east) {\includegraphics[width=0.12\textwidth]{../figures/mindmap-small.png}};
+\node[anchor=south east,yshift=10pt,xshift=-5pt] at (current page.south east) 
+{\includegraphics[width=.2\textwidth]{../figures/Rlogo.png}};
+\end{tikzpicture}%%
+If the experiment is well designed, its planning essentially determines the statistical model to be used (at least qualitatively);
+\vone
+The analysis techniques are usually simple (but the devil is in the details);
+\vone
+Use of existing tools and techniques;
+\vone
+Inference on the \textit{statistical significance} of the results;
+\lfr{R: A Language and Environment for Statistical Computing - \url{http://www.R-project.org/}}
+
+\end{ftst}
+
+%=====
+
+\begin{ftst}
+{Statistical modeling and inference}
+{A consequence of design}
+\begin{tikzpicture} [remember picture,overlay]
+\node[anchor=north east,yshift=-8pt,xshift=0pt] at (current page.north east) {\includegraphics[width=0.12\textwidth]{../figures/mindmap-small.png}};
+\node[anchor=south east,yshift=10pt,xshift=-5pt] at (current page.south east) 
+{\includegraphics[width=.2\textwidth]{../figures/Rlogo.png}};
+\end{tikzpicture}%%
+If the experiment is well designed, its planning essentially determines the statistical model to be used (at least qualitatively);
+\vone
+The analysis techniques are usually simple (but the devil is in the details);
+\vone
+Use of existing tools and techniques;
+\vone
+Inference on the \textit{statistical significance} of the results;
+\lfr{R: A Language and Environment for Statistical Computing - \url{http://www.R-project.org/}}
+
+\end{ftst}
+
+%=====
+
+\begin{ftst}
+{Reporting of results}
+{Presentation}
+\begin{tikzpicture} [remember picture,overlay]
+\node[anchor=north east,yshift=-8pt,xshift=0pt] at (current page.north east) {\includegraphics[width=0.12\textwidth]{../figures/mindmap-small.png}};
+\node[anchor=south east,yshift=100pt,xshift=-15pt] at (current page.south east) 
+{\includegraphics[height=2.5cm]{../figures/tufte.jpg}};
+\node[anchor=south east,yshift=20pt,xshift=-15pt] at (current page.south east) 
+{\includegraphics[height=2.5cm]{../figures/yau.png}};
+\end{tikzpicture}%%
+Combine textual, numeric and graphical elements to tell a story with your data. It simplifies the understanding and analysis of the results.
+\begin{columns}[T]
+\column{0.75\textwidth}
+	\bitems Strive to achieve graphical excellence;
+		\spitem Coherence of notation - special attention to figures and tables;
+		\spitem Display simultaneous confidence intervals and other graphical indicators of effect size.
+	\eitem
+\column{0.25\textwidth}
+\end{columns}
+\lfr{Other great resources on graphical excellence:}
+\lfr{\textit{Flowing Data} (\url{http://flowingdata.com/})}
+\lfr{\textit{Information is Beautiful} (\url{http://www.informationisbeautiful.net})}
+\end{ftst}
+
+%=====
+
+\begin{ftst}
+{Reporting of results}
+{Tell the whole story}
+Avoid \textit{cherrypicking} your results;
+\vone
+Report and describe anomalous results and outliers (even if they are discarded in the modeling phase);
+\vone
+Exercise \textit{extreme} caution when discarding outliers!
+\vone
+Detail stop criteria, computational cost, and any other relevant information for the understanding and reproducibility of your results.
+\vone
+Whenever possible, share your code! It's good for the field as a whole (for reproducibility), and it is good for your paper (for citations)!
+\lfr{R.D. Peng, \textit{Reproducible Research in Computational Science}, Science 334(6060):1226-1227, 2011}
+\lfr{P. Vandewalle, \textit{Code Sharing Is Associated with Research Impact in Image Processing}, Computer Science and Engineering 14(4):42-47, 2012}
+\end{ftst}
+
+
+%=====
+
+\begin{ftst}
+{Conclusions}
+{Drawing and reporting conclusions}
+\begin{tikzpicture} [remember picture,overlay]
+\node[anchor=north east,yshift=-8pt,xshift=0pt] at (current page.north east) {\includegraphics[width=0.12\textwidth]{../figures/mindmap-small.png}};
+\end{tikzpicture}%%
+Conclusions should be based on solid evidence from the data;
+\vone
+Be conservative - don't exaggerate the generality of the results;
+\vone
+Report significance levels, effect sizes, and the assumptions under which the results are valid;
+\vone
+\textit{Suggest explanations} to the observed results;
+\vone
+Be careful with \textit{anomaly hunting};
+\begin{columns}
+\column[T]{\textwidth}
+\begin{block}{}
+	\flushright\small``\textit{Always let the science drive the statistics. If you get a statistically significant result, go back and describe what it means in the scientific context.}`''
+	\flushright\small -- Aaron Rendahl
+\end{block}
+\column[T]{.1\textwidth}
+\end{columns}
+\end{ftst}
+
+%=====
+
+%=====
+
+\begin{ftst}
+{Want more?}
+{Some shameless self-promotion}
+\begin{tikzpicture} [remember picture,overlay]
+\node[anchor=north east,yshift=-8pt,xshift=0pt] at (current page.north east) {\includegraphics[width=0.12\textwidth]{../figures/mindmap-small.png}};
+\end{tikzpicture}%%
+\vone
+If you liked this short tutorial, check the online materials available at:
+
+\vone\vone
+{\footnotesize\centering\url{https://github.com/fcampelo/Design-and-Analysis-of-Experiments}}
+\vone\vone
+
+\begin{flushright}
+It's free, and I think you'll like it too!
+\end{flushright}
+\end{ftst}
+
+%=====
+
+\begin{ftst}
+{Questions?}
+{\ }
+\begin{tikzpicture} [remember picture,overlay]
+\node[anchor=south,yshift=40pt] at (current page.south)
+{ \includegraphics[width=.25\textwidth]{../figures/Itt.png}};
+\node[anchor=south,yshift=130pt,xshift = 30] at (current page.south)
+{ \includegraphics[angle = -20,width=.1\textwidth]{../figures/question.png}};
+\node[anchor=north east,yshift=-8pt,xshift=0pt] at (current page.north east) {\includegraphics[width=0.12\textwidth]{../figures/mindmap-small.png}};
+
+\end{tikzpicture}
+\lfr{Images: \url{http://kawiku.deviantart.com/art/Cousin-Itt-334962933}}
+\lfr{\ \ \ \ \ \ \ \ \ \ \ \ \ \  \url{https://commons.wikimedia.org/wiki/File:Question-mark-blackandwhite.png}}
+\end{ftst}
+
+%=====
+
+\begin{ftstf}{About this material}{Conditions of use and referencing}
+\centering\footnotesize This work is licensed under the Creative Commons CC BY-NC-SA 4.0 license\\(Attribution Non-Commercial Share Alike International License version 4.0).\\
+\vhalf
+\url{http://creativecommons.org/licenses/by-nc-sa/4.0/}\\
+\vhalf
+\footnotesize Please reference this work as:
+\vskip 0.2em
+\scriptsize \flushleft Felipe Campelo, \textit{Design of Experiments and Statistical Comparison of Evolutionary Agorithms}. Online: {\scriptsize\url{http://git.io/vZph7}}, Latin American School on Computational Intelligence, October 13, 2015, Curitiba, Brazil; Creative Commons BY-NC-SA 4.0.\\
+
+\begin{Verbatim}[fontsize=\tiny]
+    @Misc{Campelo2015-LASCI,
+      title={Design of Experiments and Statistical Comparison of Evolutionary Agorithms},
+      author={Felipe Campelo},
+      howPublished={http://git.io/vZph7},
+      year={2015},
+      month={October 13},
+      note={Latin American School on Computational Intelligence, 
+            Curitiba, Brazil; Creative Commons BY-NC-SA 4.0.}}
+\end{Verbatim}
+
+\begin{tikzpicture} [remember picture,overlay]
+\node[anchor=south,yshift=0pt] at (current page.south){ \includegraphics[width=.2\textwidth]{../figures/CCSomerights.png}};
+\end{tikzpicture}%
+\end{ftstf}
+
+
+\end{document}

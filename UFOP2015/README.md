@@ -11,7 +11,7 @@ Felipe Campelo, _Design of Experiments and Statistical Comparison of Metaheurist
 Or, if you’re using Bibtex (which you definitely should):
 
 ```
-@Misc{Campelo2015-CEFET,
+@Misc{Campelo2015-UFOP,
 	title={Design of Experiments and Statistical Comparison of Metaheuristics},
 	author={Felipe Campelo},
 	howPublished={\url{http://git.io/vlpVW}},
