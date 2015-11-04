@@ -6,7 +6,7 @@ This tutorial is essentially the same one (with minor modifications) presented a
 
 Please cite this presentation as:
 
-Felipe Campelo, _Design of Experiments and Statistical Comparison of Metaheuristics_. Online: [http://git.io/vWsN2](http://git.io/vWsN2), UFOP, November 5th, 2015, Ouro Preto, Brazil; Creative Commons BY-NC-SA 4.0.
+Felipe Campelo, _Design of Experiments and Statistical Comparison of Metaheuristics_. Online: [http://git.io/vlpVW](http://git.io/vlpVW), UFOP, November 5th, 2015, Ouro Preto, Brazil; Creative Commons BY-NC-SA 4.0.
 
 Or, if you’re using Bibtex (which you definitely should):
 
@@ -14,7 +14,7 @@ Or, if you’re using Bibtex (which you definitely should):
 @Misc{Campelo2015-CEFET,
 	title={Design of Experiments and Statistical Comparison of Metaheuristics},
 	author={Felipe Campelo},
-	howPublished={\url{http://git.io/vWsN2}},
+	howPublished={\url{http://git.io/vlpVW}},
 	year={2015},
 	month={November 5th},
 	note={UFOP, Ouro Preto, Brazil; Creative Commons BY-NC-SA 4.0.}}
